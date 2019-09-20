@@ -2,7 +2,7 @@ package no.hvl.dat152;
 
 import java.io.IOException;
 
-@javax.servlet.annotation.WebServlet(name = "TestServlet")
+@javax.servlet.annotation.WebServlet(name = "TestServlet", urlPatterns = "/test")
 public class TestServlet extends javax.servlet.http.HttpServlet {
 
 	protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
@@ -10,6 +10,6 @@ public class TestServlet extends javax.servlet.http.HttpServlet {
 	}
 
 	protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-
+        request.getRequestDispatcher("index.html").forward(request,response);
 	}
 }
