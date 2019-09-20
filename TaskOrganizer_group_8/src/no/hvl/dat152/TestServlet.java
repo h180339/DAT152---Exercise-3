@@ -10,6 +10,6 @@ public class TestServlet extends javax.servlet.http.HttpServlet {
 	}
 
 	protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-        request.getRequestDispatcher("index.html").forward(request,response);
+		request.getRequestDispatcher("Test.html").forward(request, response);
 	}
 }
