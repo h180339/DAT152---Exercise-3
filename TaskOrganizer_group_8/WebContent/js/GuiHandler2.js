@@ -9,7 +9,7 @@ class GuiHandler {
         let item = document.getElementById(id);
         item.parentElement.removeChild(item);
 
-    };
+    }
 
     showTask = (task) => {
         //console.log(this.allstatuses.length);
@@ -50,6 +50,16 @@ class GuiHandler {
 
     updateTask = (task) => {
         document.getElementById(task.id).getElementsByTagName('td')[1].innerHTML = `${task.status}`;
+        const test = document.getElementById(task.id).getElementsByTagName('td')[2];
+        test.querySelector('.select-element').value = '0';
+        const optionEl =test.getElementsByTagName('option');
+        for (let i = 0; i<optionEl.length; i++){
+            if(optionEl[i].value === task.status){
+                optionEl[i].disabled = true;
+            } else {
+                optionEl[i].disabled = false;
+            }
+        }
 
     }
 
