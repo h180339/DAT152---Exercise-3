@@ -3,6 +3,8 @@
 class GuiHandler {
     constructor() {
         this.allstatuses = [];
+        this.deleteTaskCallback;
+        this.newStatusCallback;
     }
 
     removeTask = (id) => {
@@ -12,7 +14,6 @@ class GuiHandler {
     }
 
     showTask = (task) => {
-        //console.log(this.allstatuses.length);
         let tekstloop = `<select class="select-element">
         <option value="0" selected="">&lt;Modify&gt;</option>`;
         for (const status of this.allstatuses) {
@@ -20,7 +21,6 @@ class GuiHandler {
             if (task.status === status) {
                 disb = ` disabled=""`;
             }
-            //console.log(`disabled: ${disb}`);
             tekstloop += `
             <option value="${status}"${disb}>${status}</option>
             `;
@@ -28,8 +28,8 @@ class GuiHandler {
         tekstloop += `</select>`;
         const taskelement = `
         <tr id=${task.id}>
-            <td>"${task.title}"</td>
-            <td>"${task.status}"</td>
+            <td>${task.title}</td>
+            <td>${task.status}</td>
             <td>
                 ${tekstloop}
             </td>
@@ -37,7 +37,7 @@ class GuiHandler {
             type="button">Remove</button></td>
         </tr>
     `;
-        document.getElementById('tbody').insertAdjacentHTML('beforeend', taskelement);
+        document.getElementById('tbody').insertAdjacentHTML('afterbegin', taskelement);
     }
 
     noTask = () => {
@@ -63,48 +63,65 @@ class GuiHandler {
 
     }
 
-    deleteTaskCallback = (id) => {
-    }
+    //deleteTaskCallback = (id) => {};
 
-    newStatusCallback = (id, newStatus) => {
-
-    }
+    //newStatusCallback = (id, newStatus) => {}
 }
 
 const gui = new GuiHandler();
-const statuses = ["WAITING", "ACTIVE", "DONE"]
+const statuses = ["WAITING", "ACTIVE", "DONE"];
 const tasks = [
     {"id": 1, "title": "Paint roof", "status": 'WAITING'},
     {"id": 2, "title": "Clean floor", "status": 'DONE'},
     {"id": 3, "title": "Wash windows", "status": 'ACTIVE'}];
 
 gui.allstatuses = statuses;
-//displays tasks in browser
-//gui.task = tasks;
-tasks.forEach(el => {
-    gui.showTask(el);
+tasks.forEach((task) => {
+    gui.showTask(task);
 });
 
 //remove item
 let btn = document.querySelectorAll('.remove-btn');
 btn.forEach(el => {
-    el.addEventListener('click', gui.deleteTaskCallback)
+    el.addEventListener('click', (event) => {
+        let button = event.currentTarget;
+        let tableRow = button.parentElement.parentElement;
+        let taskName = tableRow.getElementsByTagName('td')[0].textContent;
+        if (window.confirm(`delete task '${taskName}' ?`)) {
+            gui.deleteTaskCallback = (id) => {
+                console.log(`User has approved the deletion of task with id ${id}.`);
+                gui.removeTask(id)
+            }
+        } else {
+            gui.deleteTaskCallback = (id) => {console.log(`Observer, task with id ${id} is not removed from the view!`)}
+        }
+        gui.deleteTaskCallback(tableRow.id);
+    })
 });
 
 //update status
 let select_element = document.querySelectorAll('.select-element');
 select_element.forEach(el => {
-    el.addEventListener('change', gui.newStatusCallback)
+    el.addEventListener('change', (event) => {
+        let selector = event.currentTarget;
+        //let tableRow = selector.parentElement.parentElement;
+        let taskName = selector.parentElement.parentElement.getElementsByTagName('td')[0].textContent;
+        let selectedValue = event.currentTarget.value;
+        if (window.confirm(`Set '${taskName}' to ${selectedValue}`)) {
+            gui.newStatusCallback = (id,newStatus) => {
+                console.log(`User has approved to change the status of task with id ${id} to ${newStatus}.`);
+                gui.updateTask({"id":id,"status":newStatus})
+            }
+        } else {
+            gui.newStatusCallback = (id,newStatus) => {
+                console.log(`Observer, task with id ${id} is not set to ${newStatus} in the view!`)
+                selector.selectedIndex = 0;
+            }
+        }
+        gui.newStatusCallback(selector.parentElement.parentElement.id, selectedValue);
+    })
 });
 
 //TODO
 gui.noTask();
 
-/*
-<select class="select-element">
-<option value="0" selected="">&lt;Modify&gt;</option>
-<option value="WAITING">WAITING</option>
-<option value="ACTIVE">ACTIVE</option>
-<option value="DONE">DONE</option>
-</select>
-*/
