@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
 
-    <title>Server for task organizer</title>
 </head>
 
 <body>
-<h1>Server for task organizer</h1>
-
-<p>This project contains the server side part of the web application.</p>
+    <div id="message"><p></p></div>
+    <div id="newtask"><button type="button">New task</button></div>
+    <div id="tasks">
+        <table>
+            <thead>
+            <tr><th>Task</th><th>Status</th></tr>
+            </thead>
+            <tbody id="tbody">
+        </table>
+    <script src="./js/GuiHandler2.js"></script>
 </body>
 </html>
