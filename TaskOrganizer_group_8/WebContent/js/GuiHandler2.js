@@ -1,16 +1,17 @@
 class GuiHandler {
-    constructor(){
-        this.task= [];
+    constructor() {
+        this.task = [];
         this.status = [];
     }
+
     removeTask = (id) => {
-    let item = document.getElementById(id.srcElement.parentElement.parentElement.id);
-    item.parentElement.removeChild(item);
+        let item = document.getElementById(id.srcElement.parentElement.parentElement.id);
+        item.parentElement.removeChild(item);
 
     };
 
-showTask = (task) => {
-    const taskelement = `
+    showTask = (task) => {
+        const taskelement = `
         <tr id=${task.id}>
             <td>"${task.title}"</td>
             <td>"${task.status}"</td>
@@ -26,57 +27,57 @@ showTask = (task) => {
             type="button">Remove</button></td>
         </tr>
     `;
-    document.getElementById('tbody').insertAdjacentHTML('beforeend', taskelement);
-}
+        document.getElementById('tbody').insertAdjacentHTML('beforeend', taskelement);
+    }
 
-noTask = () =>{
-    if (this.task === 0) {
-        document.getElementById('message').innerHTML = `Waiting for server data.`;
-    } else{
-        document.getElementById('message').innerHTML = `Found ${tasks.length} tasks.`;
+    noTask = () => {
+        if (this.task === 0) {
+            document.getElementById('message').innerHTML = `Waiting for server data.`;
+        } else {
+            document.getElementById('message').innerHTML = `Found ${tasks.length} tasks.`;
+        }
+    }
+
+    updateTask = (task) => {
+        const taskid = task.srcElement.value;
+        const x = task.srcElement.parentElement.parentElement;
+        x.getElementsByTagName('td')[1].innerHTML = `${taskid}`;
+
+    }
+
+    deleteTaskCallback = (id) => {
+        const elid = id.srcElement.parentElement.parentElement.id;
+        const titel = this.task[elid - 1].title;
+        if (confirm(`Delete task ${titel}`)) {
+            console.log(`User has approved the deletion of task with id ${elid}.`);
+            this.removeTask(id);
+        } else {
+            console.log(`Observer, task with id ${elid} is not removed from the view!`)
+        }
+    }
+
+    newStatusCallback = (id, newStatus) => {
+        const elid = id.srcElement.parentElement.parentElement.id;
+        const titel = this.task[elid - 1];
+        newStatus = id.srcElement.value;
+        if (confirm(`Set ${titel.title} to ${newStatus}`)) {
+            console.log(`User has approved to change the status of task with id ${elid} to ${newStatus}.`);
+            this.updateTask(event);
+        } else {
+            console.log(`Observer, task with id ${elid} is not set to ${newStatus} in the view!`);
+        }
     }
 }
 
-updateTask  = (task) => {
-    const taskid = task.srcElement.value;
-    const x = task.srcElement.parentElement.parentElement;
-    x.getElementsByTagName('td')[1].innerHTML = `${taskid}`;
-
-}
-
-deleteTaskCallback = (id) => {
-    const elid = id.srcElement.parentElement.parentElement.id;
-    const titel = this.task[elid - 1].title;
-    if(confirm(`Delete task ${titel}`)){
-        console.log(`User has approved the deletion of task with id ${elid}.`);
-        this.removeTask(id);
-    }else{
-        console.log(`Observer, task with id ${elid} is not removed from the view!`)
-    }
-}
-
-newStatusCallback = (id, newStatus) => {
-    const elid = id.srcElement.parentElement.parentElement.id;
-    const titel = this.task[elid - 1];
-    newStatus = id.srcElement.value;
-    if(confirm(`Set ${titel.title} to ${newStatus}`)){
-        console.log(`User has approved to change the status of task with id ${elid} to ${newStatus}.`);
-        this.updateTask(event);
-    }else{
-        console.log(`Observer, task with id ${elid} is not set to ${newStatus} in the view!`);
-    }
-}
-}
-
-    const gui = new GuiHandler();
-    const tasks = [
-        {"id": 1, "title": "Paint roof", "status": 'WAITING'},
-        {"id": 2, "title": "Clean floor", "status": 'DONE'},
-        {"id": 3, "title": "Wash windows", "status": 'ACTIVE'}];
+const gui = new GuiHandler();
+const tasks = [
+    {"id": 1, "title": "Paint roof", "status": 'WAITING'},
+    {"id": 2, "title": "Clean floor", "status": 'DONE'},
+    {"id": 3, "title": "Wash windows", "status": 'ACTIVE'}];
 
 //displays tasks in browser
-    gui.task = tasks;
-    gui.task.forEach(el => {
+gui.task = tasks;
+gui.task.forEach(el => {
     gui.showTask(el);
 });
 
