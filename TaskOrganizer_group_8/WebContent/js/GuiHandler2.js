@@ -6,7 +6,7 @@ class GuiHandler {
     }
 
     removeTask = (id) => {
-        let item = document.getElementById(id.srcElement.parentElement.parentElement.id);
+        let item = document.getElementById(id);
         item.parentElement.removeChild(item);
 
     };
@@ -49,33 +49,15 @@ class GuiHandler {
     }
 
     updateTask = (task) => {
-        const taskid = task.srcElement.value;
-        const x = task.srcElement.parentElement.parentElement;
-        x.getElementsByTagName('td')[1].innerHTML = `${taskid}`;
+        document.getElementById(task.id).getElementsByTagName('td')[1].innerHTML = `${task.status}`;
 
     }
 
     deleteTaskCallback = (id) => {
-        const elid = id.srcElement.parentElement.parentElement.id;
-        const titel = this.task[elid - 1].title;
-        if (confirm(`Delete task ${titel}`)) {
-            console.log(`User has approved the deletion of task with id ${elid}.`);
-            this.removeTask(id);
-        } else {
-            console.log(`Observer, task with id ${elid} is not removed from the view!`)
-        }
     }
 
     newStatusCallback = (id, newStatus) => {
-        const elid = id.srcElement.parentElement.parentElement.id;
-        const titel = this.task[elid - 1];
-        newStatus = id.srcElement.value;
-        if (confirm(`Set ${titel.title} to ${newStatus}`)) {
-            console.log(`User has approved to change the status of task with id ${elid} to ${newStatus}.`);
-            this.updateTask(event);
-        } else {
-            console.log(`Observer, task with id ${elid} is not set to ${newStatus} in the view!`);
-        }
+
     }
 }
 
