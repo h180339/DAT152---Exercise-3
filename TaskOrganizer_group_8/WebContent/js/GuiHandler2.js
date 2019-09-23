@@ -7,7 +7,7 @@ class GuiHandler {
     let item = document.getElementById(id.srcElement.parentElement.parentElement.id);
     item.parentElement.removeChild(item);
 
-}
+    };
 
 showTask = (task) => {
     const taskelement = `
@@ -30,7 +30,7 @@ showTask = (task) => {
 }
 
 noTask = () =>{
-    if(this.task == 0){
+    if (this.task === 0) {
         document.getElementById('message').innerHTML = `Waiting for server data.`;
     } else{
         document.getElementById('message').innerHTML = `Found ${tasks.length} tasks.`;
@@ -70,9 +70,9 @@ newStatusCallback = (id, newStatus) => {
 
     const gui = new GuiHandler();
     const tasks = [
-        {"id":1,"title":"Paint roof","status":"WAITING"},
-        {"id":2,"title":"Clean floor","status":"DONE"},
-        {"id":3,"title":"Wash windows","status":"ACTIVE"}];
+        {"id": 1, "title": "Paint roof", "status": 'WAITING'},
+        {"id": 2, "title": "Clean floor", "status": 'DONE'},
+        {"id": 3, "title": "Wash windows", "status": 'ACTIVE'}];
 
 //displays tasks in browser
     gui.task = tasks;

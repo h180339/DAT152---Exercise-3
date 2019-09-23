@@ -67,3 +67,5 @@ class GuiHandler {
 
 
 }
+
+let gui = new GuiHandler();
