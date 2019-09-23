@@ -1,7 +1,8 @@
+"use strict";
+
 class GuiHandler {
     constructor() {
-        this.task = [];
-        this.status = [];
+        this.allstatuses = [];
     }
 
     removeTask = (id) => {
@@ -11,17 +12,26 @@ class GuiHandler {
     };
 
     showTask = (task) => {
+        //console.log(this.allstatuses.length);
+        let tekstloop = `<select class="select-element">
+        <option value="0" selected="">&lt;Modify&gt;</option>`;
+        for (const status of this.allstatuses) {
+            let disb = ``;
+            if (task.status === status) {
+                disb = ` disabled=""`;
+            }
+            //console.log(`disabled: ${disb}`);
+            tekstloop += `
+            <option value="${status}"${disb}>${status}</option>
+            `;
+        }
+        tekstloop += `</select>`;
         const taskelement = `
         <tr id=${task.id}>
             <td>"${task.title}"</td>
             <td>"${task.status}"</td>
             <td>
-                 <select class="select-element">
-                    <option value="0" selected="">&lt;Modify&gt;</option>
-                    <option value="WAITING">WAITING</option>
-                    <option value="ACTIVE">ACTIVE</option>
-                    <option value="DONE">DONE</option>
-                </select>
+                ${tekstloop}
             </td>
         <td><button id="rbtn" class="remove-btn" 
             type="button">Remove</button></td>
@@ -70,14 +80,16 @@ class GuiHandler {
 }
 
 const gui = new GuiHandler();
+const statuses = ["WAITING", "ACTIVE", "DONE"]
 const tasks = [
     {"id": 1, "title": "Paint roof", "status": 'WAITING'},
     {"id": 2, "title": "Clean floor", "status": 'DONE'},
     {"id": 3, "title": "Wash windows", "status": 'ACTIVE'}];
 
+gui.allstatuses = statuses;
 //displays tasks in browser
-gui.task = tasks;
-gui.task.forEach(el => {
+//gui.task = tasks;
+tasks.forEach(el => {
     gui.showTask(el);
 });
 
@@ -93,4 +105,14 @@ select_element.forEach(el => {
     el.addEventListener('change', gui.newStatusCallback)
 });
 
+//TODO
 gui.noTask();
+
+/*
+<select class="select-element">
+<option value="0" selected="">&lt;Modify&gt;</option>
+<option value="WAITING">WAITING</option>
+<option value="ACTIVE">ACTIVE</option>
+<option value="DONE">DONE</option>
+</select>
+*/
