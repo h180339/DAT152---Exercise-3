@@ -2,9 +2,10 @@
 <html>
 <head>
     <link href="style.css" rel="stylesheet" type="text/css">
-    <script defer src="./js/GuiHandler2.js"></script>
+    <script defer src="./js/GuiHandler.js"></script>
+    <script defer src="./js/TaskBox.js"></script>
+    <script defer src="./js/taskBoxController.js"></script>
     <script defer src="./js/AppController.js"></script>
-    <script defer src="./js/controller.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
@@ -32,15 +33,15 @@
         <table>
             <tr>
                 <th>Title:</th>
-                <td><input maxlength="80" size="25" type="text"/></td>
+                <td><input id="taskInput" maxlength="80" size="25" type="text"/></td>
             </tr>
             <tr>
                 <th>Status:</th>
-                <td><select></select></td>
+                <td><select id="modalStatuses"></select></td>
             </tr>
         </table>
         <p>
-            <button type="submit">Add task</button>
+            <button id="addTaskButton" type="submit">Add task</button>
         </p>
     </div>
 </div>

@@ -7,6 +7,14 @@ class GuiHandler {
         this.newStatusCallbackArray = [];
     }
 
+    set deleteTaskCallback(funk) {
+        this.deleteTaskCallbackArray.push(funk);
+    }
+
+    set newStatusCallback(funk) {
+        this.newStatusCallbackArray.push(funk);
+    }
+
     removeTask = (id) => {
         let item = document.getElementById(id);
         item.parentElement.removeChild(item);
@@ -60,9 +68,9 @@ class GuiHandler {
         document.getElementById(task.id).getElementsByTagName('td')[1].innerHTML = `${task.status}`;
         const test = document.getElementById(task.id).getElementsByTagName('td')[2];
         test.querySelector('.select-element').value = '0';
-        const optionEl =test.getElementsByTagName('option');
-        for (let i = 0; i<optionEl.length; i++){
-            if(optionEl[i].value === task.status){
+        const optionEl = test.getElementsByTagName('option');
+        for (let i = 0; i < optionEl.length; i++) {
+            if (optionEl[i].value === task.status) {
                 optionEl[i].disabled = true;
             } else {
                 optionEl[i].disabled = false;
@@ -70,6 +78,7 @@ class GuiHandler {
         }
 
     }
+
     onRemoveButtonClick(event) {
         let button = event.currentTarget;
         let tableRow = button.parentElement.parentElement;
@@ -78,6 +87,7 @@ class GuiHandler {
             gui.deleteTaskCallbackArray.forEach((x) => x(tableRow.id))
         }
     }
+
     onUpdateStatus(event) {
         let selector = event.currentTarget;
         //let tableRow = selector.parentElement.parentElement;
@@ -86,14 +96,6 @@ class GuiHandler {
         if (window.confirm(`Set '${taskName}' to ${selectedValue}`)) {
             gui.newStatusCallbackArray.forEach((x) => x(selector.parentElement.parentElement.id, selectedValue))
         }
-    }
-
-    set deleteTaskCallback (funk) {
-        this.deleteTaskCallbackArray.push(funk);
-    }
-
-    set newStatusCallback (funk) {
-        this.newStatusCallbackArray.push(funk);
     }
 }
 
