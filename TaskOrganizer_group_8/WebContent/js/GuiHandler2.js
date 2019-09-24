@@ -3,15 +3,15 @@
 class GuiHandler {
     constructor() {
         this.allstatuses = [];
-        this.deleteTaskCallback;
-        this.newStatusCallback;
+        this.deleteTaskCallbackArray = [];
+        this.newStatusCallbackArray = [];
     }
 
     removeTask = (id) => {
         let item = document.getElementById(id);
         item.parentElement.removeChild(item);
 
-    }
+    };
 
     showTask = (task) => {
         let tekstloop = `<select class="select-element">
@@ -38,7 +38,11 @@ class GuiHandler {
         </tr>
     `;
         document.getElementById('tbody').insertAdjacentHTML('afterbegin', taskelement);
-    }
+        let buttons = document.getElementsByClassName('remove-btn');
+        buttons[0].addEventListener('click', this.onRemoveButtonClick);
+        let selectors = document.getElementsByClassName('select-element');
+        selectors[0].addEventListener('change', this.onUpdateStatus)
+    };
 
     noTask = () => {
         if (this.task === 0) {
@@ -62,10 +66,31 @@ class GuiHandler {
         }
 
     }
+    onRemoveButtonClick(event) {
+        let button = event.currentTarget;
+        let tableRow = button.parentElement.parentElement;
+        let taskName = tableRow.getElementsByTagName('td')[0].textContent;
+        if (window.confirm(`delete task '${taskName}' ?`)) {
+            gui.deleteTaskCallbackArray.forEach((x) => x(tableRow.id))
+        }
+    }
+    onUpdateStatus(event) {
+        let selector = event.currentTarget;
+        //let tableRow = selector.parentElement.parentElement;
+        let taskName = selector.parentElement.parentElement.getElementsByTagName('td')[0].textContent;
+        let selectedValue = event.currentTarget.value;
+        if (window.confirm(`Set '${taskName}' to ${selectedValue}`)) {
+            gui.newStatusCallbackArray.forEach((x) => x(selector.parentElement.parentElement.id, selectedValue))
+        }
+    }
 
-    //deleteTaskCallback = (id) => {};
+    set deleteTaskCallback (funk) {
+        this.deleteTaskCallbackArray.push(funk);
+    }
 
-    //newStatusCallback = (id, newStatus) => {}
+    set newStatusCallback (funk) {
+        this.newStatusCallbackArray.push(funk);
+    }
 }
 
 const gui = new GuiHandler();
@@ -80,48 +105,15 @@ tasks.forEach((task) => {
     gui.showTask(task);
 });
 
-//remove item
-let btn = document.querySelectorAll('.remove-btn');
-btn.forEach(el => {
-    el.addEventListener('click', (event) => {
-        let button = event.currentTarget;
-        let tableRow = button.parentElement.parentElement;
-        let taskName = tableRow.getElementsByTagName('td')[0].textContent;
-        if (window.confirm(`delete task '${taskName}' ?`)) {
-            gui.deleteTaskCallback = (id) => {
-                console.log(`User has approved the deletion of task with id ${id}.`);
-                gui.removeTask(id)
-            }
-        } else {
-            gui.deleteTaskCallback = (id) => {console.log(`Observer, task with id ${id} is not removed from the view!`)}
-        }
-        gui.deleteTaskCallback(tableRow.id);
-    })
-});
 
 //update status
-let select_element = document.querySelectorAll('.select-element');
-select_element.forEach(el => {
-    el.addEventListener('change', (event) => {
-        let selector = event.currentTarget;
-        //let tableRow = selector.parentElement.parentElement;
-        let taskName = selector.parentElement.parentElement.getElementsByTagName('td')[0].textContent;
-        let selectedValue = event.currentTarget.value;
-        if (window.confirm(`Set '${taskName}' to ${selectedValue}`)) {
-            gui.newStatusCallback = (id,newStatus) => {
-                console.log(`User has approved to change the status of task with id ${id} to ${newStatus}.`);
-                gui.updateTask({"id":id,"status":newStatus})
-            }
-        } else {
-            gui.newStatusCallback = (id,newStatus) => {
-                console.log(`Observer, task with id ${id} is not set to ${newStatus} in the view!`)
-                selector.selectedIndex = 0;
-            }
-        }
-        gui.newStatusCallback(selector.parentElement.parentElement.id, selectedValue);
-    })
-});
 
 //TODO
 gui.noTask();
+
+gui.deleteTaskCallback = (id) => {console.log(`User has approved the deletion of task with id ${id}.`)};
+gui.deleteTaskCallback = (id) => {console.log(`Observer, task with id ${id} is not removed from the view!`)};
+
+gui.newStatusCallback = (id,newStatus) => {console.log(`User has approved to change the status of task with id ${id} to ${newStatus}.`)};
+gui.newStatusCallback = (id,newStatus) => {console.log(`Observer, task with id ${id} is not set to ${newStatus} in the view!`)};
 
