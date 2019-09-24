@@ -10,6 +10,7 @@ class GuiHandler {
     removeTask = (id) => {
         let item = document.getElementById(id);
         item.parentElement.removeChild(item);
+        this.noTask();
 
     };
 
@@ -45,10 +46,13 @@ class GuiHandler {
     };
 
     noTask = () => {
-        if (this.task === 0) {
+        let tbody = document.getElementById('tbody');
+        let count = tbody.rows.length;
+
+        if (count === 0) {
             document.getElementById('message').innerHTML = `Waiting for server data.`;
         } else {
-            document.getElementById('message').innerHTML = `Found ${tasks.length} tasks.`;
+            document.getElementById('message').innerHTML = `Found ${count} tasks.`;
         }
     }
 
