@@ -58,10 +58,11 @@ class GuiHandler {
         let tbody = document.getElementById('tbody');
         let count = tbody.rows.length;
 
-        if (count === 0) {
-            document.getElementById('message').innerHTML = `Waiting for server data.`;
-        } else {
+        if (count > 0) {
             document.getElementById('message').innerHTML = `Found ${count} tasks.`;
+
+        } else {
+            document.getElementById('message').innerHTML = `No task was found`;
         }
     }
 

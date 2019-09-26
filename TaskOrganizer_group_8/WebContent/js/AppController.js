@@ -9,39 +9,51 @@ const gui = new GuiHandler();
     {"id":2,"title":"Clean floor","status":"DONE"},
     {"id":3,"title":"Wash windows","status":"ACTIVE"}];*/
 
-
 const getServerData = async ()=>{
-    await fetch('broker/allstatuses')
-        .then(resolve =>{
-            return resolve.json();
-        })
-        .then(data =>{
-            data.allstatuses.forEach(el =>{
-                gui.allstatuses.push(el);
+    try {
+        await fetch('broker/allstatuses')
+            .then(resolve =>{
+                return resolve.json();
             })
+            .then(data =>{
+                    if(data.responseStatus === true){
+                        data.allstatuses.forEach(el =>{
+                            gui.allstatuses.push(el);
+                        })
+                    } else {
+                        console.log(`no response`);
+                    }
+            });
+
+        await fetch('broker/tasklist')
+            .then(resolve =>{
+                return resolve.json();
+            })
+            .then(data =>{
+                if (data.responseStatus === true){
+                    data.tasks.forEach(el =>{
+                        gui.tasks.push(el);
+                    })
+                }else {
+                    console.log(`no response`)
+                }
+            });
+
+        gui.tasks.forEach((task) => {
+            gui.showTask(task);
         });
 
-    await fetch('broker/tasklist')
-        .then(resolve =>{
-            return resolve.json();
-        })
-        .then(data =>{
-            data.tasks.forEach(el =>{
-                gui.tasks.push(el);
-            })
-        });
-
-    gui.tasks.forEach((task) => {
-        gui.showTask(task);
-    });
+    } catch (e) {
+        console.log(e.message);
+    }finally {
+        gui.noTask();
+    }
 }
-getServerData();
-
 
 //update status
 
 //TODO
-gui.noTask();
+window.addEventListener('load', getServerData);
 
 gui.deleteTaskCallback = (id) => {console.log(`User has approved the deletion of task with id ${id}.`)};
 gui.deleteTaskCallback = (id) => {console.log(`Observer, task with id ${id} is not removed from the view!`)};
