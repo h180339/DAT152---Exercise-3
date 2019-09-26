@@ -2,6 +2,7 @@
 
 class GuiHandler {
     constructor() {
+        this.tasks = [];
         this.allstatuses = [];
         this.deleteTaskCallbackArray = [];
         this.newStatusCallbackArray = [];
