@@ -3,13 +3,20 @@
 /*
 This class enables use of the addTask Modal, it shows a modal when initialized and called with show().
 It has a callback function that will be used when a task is added. Set this like t.onsubmit = x
+The constructor can take in two arguments, an array of statuses, and an onsubmit callback function.
  */
 
 class TaskBox {
 
-    constructor() {
-        this._allstatuses = [];
-        this._onsubmit = null;
+    constructor(statuses, onsubmit) {
+        if (arguments.length > 0) {
+            this._allstatuses = statuses;
+            this._onsubmit = onsubmit;
+        } else {
+            this._allstatuses = [];
+            this._onsubmit = null;
+        }
+
     }
 
     get allstatuses() {
