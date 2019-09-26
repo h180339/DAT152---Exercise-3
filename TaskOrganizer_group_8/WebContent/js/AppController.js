@@ -4,11 +4,6 @@
 
 const gui = new GuiHandler();
 
-/*const tasks = [
-    {"id":1,"title":"Paint roof","status":"WAITING"},
-    {"id":2,"title":"Clean floor","status":"DONE"},
-    {"id":3,"title":"Wash windows","status":"ACTIVE"}];*/
-
 const getServerData = async ()=>{
     try {
         await fetch('broker/allstatuses')
@@ -49,14 +44,32 @@ const getServerData = async ()=>{
         gui.noTask();
     }
 }
+gui.deleteTaskCallback =(id) =>{
+    console.log(`User has approved the deletion of task with id ${id}.`)
+    fetch(`broker/task/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+        }
+    })
+        .then(result => {
+            return result.json();
+        })
+        .then(data =>{
+            if (data.responseStatus === true){
+                gui.removeTask(id);
+            }else{
+                console.log(`Observer, task with id ${id} is not removed from the view!`)
+            }
+        })
+}
+
+
 
 //update status
 
 //TODO
 window.addEventListener('load', getServerData);
-
-gui.deleteTaskCallback = (id) => {console.log(`User has approved the deletion of task with id ${id}.`)};
-gui.deleteTaskCallback = (id) => {console.log(`Observer, task with id ${id} is not removed from the view!`)};
 
 gui.newStatusCallback = (id,newStatus) => {console.log(`User has approved to change the status of task with id ${id} to ${newStatus}.`)};
 gui.newStatusCallback = (id,newStatus) => {console.log(`Observer, task with id ${id} is not set to ${newStatus} in the view!`)};
