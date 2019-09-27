@@ -62,7 +62,26 @@ gui.deleteTaskCallback =(id) =>{
                 console.log(`Observer, task with id ${id} is not removed from the view!`)
             }
         })
-}
+};
+
+gui.newStatusCallback = async (id,newStatus) => {
+    const url=`broker/task/${id}`;
+    try {
+        const response = await fetch(url,{
+            method: "PUT",
+            headers: {"Content-Type": "application/json; charset=utf-8"},
+            body: JSON.stringify({'status': `${newStatus}`})
+        });
+        try {
+            const text = await response.json();
+            gui.updateTask(text);
+            console.log(text)
+        } catch (error) {
+            console.log(error)
+        }
+    } catch (error) {
+        console.log(error)
+    }};
 
 
 
@@ -71,7 +90,7 @@ gui.deleteTaskCallback =(id) =>{
 //TODO
 window.addEventListener('load', getServerData);
 
-gui.newStatusCallback = (id,newStatus) => {console.log(`User has approved to change the status of task with id ${id} to ${newStatus}.`)};
-gui.newStatusCallback = (id,newStatus) => {console.log(`Observer, task with id ${id} is not set to ${newStatus} in the view!`)};
+//gui.newStatusCallback = (id,newStatus) => {console.log(`User has approved to change the status of task with id ${id} to ${newStatus}.`)};
+//gui.newStatusCallback = (id,newStatus) => {console.log(`Observer, task with id ${id} is not set to ${newStatus} in the view!`)};
 
 
