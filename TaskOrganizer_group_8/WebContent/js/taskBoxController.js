@@ -5,7 +5,6 @@ This shows how the TaskBox class should be interacted with.
  */
 
 let addTaskCallback = async (task) => {
-    console.log(JSON.stringify(task))
     try {
         const response = await fetch('broker/task', {
             method: 'POST',
@@ -14,13 +13,14 @@ let addTaskCallback = async (task) => {
                 'Content-Type': 'application/json'
             }
         });
+        taskbox.close();
         await response.json().then(data => {
-            let result = response;
-            taskbox.close();
-            console.log(data);
-            let resultTask = new Task();
-            console.log(resultTask)
-            gui2.showTask(resultTask)
+            let resultTask = {
+                id: data.task.id,
+                title: data.task.title,
+                status: data.task.status
+            };
+            gui.showTask(resultTask);
         });
     } catch (e) {
         console.log(`Got error ${e.message}.`)
@@ -31,7 +31,7 @@ const tasksmodaleboxdiv = document.getElementById("taskbox");
 const tasknewbutton = document.getElementById("newTask");
 
 taskbox = new TaskBox(tasksmodaleboxdiv);
-let taskBoxStatus = ["Waiting", "Done", "Active"];
+let taskBoxStatus = ["WAITING", "DONE", "ACTIVE"];
 const gui2 = new GuiHandler();
 taskbox.allstatuses = taskBoxStatus;
 taskbox.onsubmit = addTaskCallback;
