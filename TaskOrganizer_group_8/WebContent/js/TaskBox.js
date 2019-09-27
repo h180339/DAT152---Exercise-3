@@ -16,6 +16,10 @@ class TaskBox {
             this._allstatuses = [];
             this._onsubmit = null;
         }
+        let addTaskButton = document.getElementById("addTaskButton");
+        addTaskButton.addEventListener("click", () => this.submit(), true);
+        let span = document.getElementsByClassName("close")[0];
+        span.addEventListener("click", () => this.close(), true);
 
     }
 
@@ -40,10 +44,8 @@ class TaskBox {
         // Get the modal
         let modal = document.getElementById("taskbox");
 
-        // Get the <span> element that closes the modal
-        let span = document.getElementsByClassName("close")[0];
-
         let select = document.getElementById("modalStatuses");
+
         if (!select.hasChildNodes()) {
             for (let i = 0; i < this._allstatuses.length; i++) {
                 let el = document.createElement("option");
@@ -54,13 +56,6 @@ class TaskBox {
 
         //Show the modal.
         modal.style.display = "block";
-
-        // When the user clicks on <span> (x), close the modal
-        span.addEventListener("click", () => this.close(), true);
-
-        let addTaskButton = document.getElementById("addTaskButton");
-
-        addTaskButton.addEventListener("click", () => this.submit(), true);
     }
 
     submit() {
