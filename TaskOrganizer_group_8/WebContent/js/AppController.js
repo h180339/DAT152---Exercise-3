@@ -46,24 +46,29 @@ const getServerData = async ()=>{
         gui.noTask();
     }
 }
-gui.deleteTaskCallback =(id) =>{
+gui.deleteTaskCallback = async (id) =>{
     console.log(`User has approved the deletion of task with id ${id}.`)
-    fetch(`broker/task/${id}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8'
-        }
-    })
-        .then(result => {
-            return result.json();
-        })
-        .then(data =>{
-            if (data.responseStatus === true){
-                gui.removeTask(id);
-            }else{
-                console.log(`Observer, task with id ${id} is not removed from the view!`)
+    try {
+       await fetch(`broker/task/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
             }
         })
+            .then(result => {
+                return result.json();
+            })
+            .then(data =>{
+                if (data.responseStatus === true){
+                    gui.removeTask(id);
+                }else{
+                }
+            })
+    } catch (e) {
+        console.log(`Observer, task with id ${id} is not removed from the view!`)
+        console.log(e);
+    }
+
 };
 
 gui.newStatusCallback = async (id,newStatus) => {
