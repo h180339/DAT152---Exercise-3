@@ -52,6 +52,7 @@ class GuiHandler {
         buttons[0].addEventListener('click', this.onRemoveButtonClick);
         let selectors = document.getElementsByClassName('select-element');
         selectors[0].addEventListener('change', this.onUpdateStatus)
+        this.noTask();
     };
 
     noTask = () => {

@@ -25,6 +25,8 @@ const getServerData = async ()=>{
                 return resolve.json();
             })
             .then(data =>{
+                const enableButton = document.getElementById("newTask");
+                enableButton.disabled = false;
                 if (data.responseStatus === true){
                     data.tasks.forEach(el =>{
                         gui.tasks.push(el);
@@ -95,7 +97,6 @@ TASKBOX CONTROLLER STUFF.
 
  */
 const addTaskCallback = async (task) => {
-    console.log(task);
     try {
         const response = await fetch('broker/task', {
             method: 'POST',
@@ -106,7 +107,6 @@ const addTaskCallback = async (task) => {
         });
         taskbox.close();
         await response.json().then(data => {
-            console.log(data)
             let resultTask = {
                 id: data.task.id,
                 title: data.task.title,
@@ -121,7 +121,7 @@ const addTaskCallback = async (task) => {
 
 const tasksmodaleboxdiv = document.getElementById("taskbox");
 const tasknewbutton = document.getElementById("newTask");
-let taskbox = new TaskBox(tasksmodaleboxdiv);
+const taskbox = new TaskBox(tasksmodaleboxdiv);
 taskbox.allstatuses = gui.allstatuses;
 taskbox.onsubmit = addTaskCallback;
 tasknewbutton.addEventListener("click", () => {
