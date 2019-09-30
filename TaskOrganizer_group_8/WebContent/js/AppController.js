@@ -41,6 +41,7 @@ const getServerData = async ()=>{
         });
 
     } catch (e) {
+        document.getElementById("serverError").innerText = "No response from server";
         console.log(e.message);
     }finally {
         gui.noTask();
