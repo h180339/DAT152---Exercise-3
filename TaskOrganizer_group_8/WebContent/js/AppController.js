@@ -6,7 +6,7 @@ const gui = new GuiHandler();
 
 const getServerData = async ()=>{
     try {
-        await fetch('broker/allstatuses')
+        await fetch('../TaskServices/broker/allstatuses')
             .then(resolve =>{
                 return resolve.json();
             })
@@ -20,7 +20,7 @@ const getServerData = async ()=>{
                     }
             });
 
-        await fetch('broker/tasklist')
+        await fetch('../TaskServices/broker/tasklist')
             .then(resolve =>{
                 return resolve.json();
             })
@@ -50,7 +50,7 @@ const getServerData = async ()=>{
 gui.deleteTaskCallback = async (id) =>{
     console.log(`User has approved the deletion of task with id ${id}.`)
     try {
-       await fetch(`broker/task/${id}`, {
+        await fetch(`../TaskServices/broker/task/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8'
@@ -73,7 +73,7 @@ gui.deleteTaskCallback = async (id) =>{
 };
 
 gui.newStatusCallback = async (id,newStatus) => {
-    const url=`broker/task/${id}`;
+    const url = `../TaskServices/broker/task/${id}`;
     try {
         const response = await fetch(url,{
             method: "PUT",
@@ -104,7 +104,7 @@ TASKBOX CONTROLLER STUFF.
  */
 const addTaskCallback = async (task) => {
     try {
-        const response = await fetch('broker/task', {
+        const response = await fetch('../TaskServices/broker/task', {
             method: 'POST',
             body: JSON.stringify(task),
             headers: {

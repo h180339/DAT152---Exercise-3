@@ -36,18 +36,28 @@ class GuiHandler {
             `;
         }
         tekstloop += `</select>`;
-        const taskelement = `
-        <tr id=${task.id}>
-            <td>${task.title}</td>
-            <td>${task.status}</td>
-            <td>
-                ${tekstloop}
-            </td>
-        <td><button id="rbtn" class="remove-btn" 
-            type="button">Remove</button></td>
-        </tr>
-    `;
-        document.getElementById('tbody').insertAdjacentHTML('afterbegin', taskelement);
+        let tr = document.createElement("tr");
+        tr.setAttribute("id", task.id);
+        let td1 = document.createElement("td");
+        td1.textContent = task.title;
+        let td2 = document.createElement("td");
+        td2.textContent = task.status;
+        let td3 = document.createElement("td");
+        td3.innerHTML = tekstloop;
+        let tableButton = document.createElement("button");
+        tableButton.setAttribute("id", "rbtn");
+        tableButton.setAttribute("class", "remove-btn");
+        tableButton.setAttribute("type", "button");
+        tableButton.textContent = "Remove";
+        let td4 = document.createElement("td")
+        td4.appendChild(tableButton);
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        tr.appendChild(td3);
+        tr.appendChild(td4);
+
+        let tbody = document.getElementById("tbody");
+        tbody.insertBefore(tr, tbody.childNodes[0]);
         let buttons = document.getElementsByClassName('remove-btn');
         buttons[0].addEventListener('click', this.onRemoveButtonClick);
         let selectors = document.getElementsByClassName('select-element');
