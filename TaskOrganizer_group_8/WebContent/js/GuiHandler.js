@@ -92,22 +92,22 @@ class GuiHandler {
 
     }
 
-    onRemoveButtonClick(event) {
+    onRemoveButtonClick = (event) => {
         let button = event.currentTarget;
         let tableRow = button.parentElement.parentElement;
         let taskName = tableRow.getElementsByTagName('td')[0].textContent;
         if (window.confirm(`delete task '${taskName}' ?`)) {
-            gui.deleteTaskCallbackArray.forEach((x) => x(tableRow.id))
+            this.deleteTaskCallbackArray.forEach((x) => x(tableRow.id))
         }
     }
 
-    onUpdateStatus(event) {
+    onUpdateStatus = (event) => {
         let selector = event.currentTarget;
         //let tableRow = selector.parentElement.parentElement;
         let taskName = selector.parentElement.parentElement.getElementsByTagName('td')[0].textContent;
         let selectedValue = event.currentTarget.value;
         if (window.confirm(`Set '${taskName}' to ${selectedValue}`)) {
-            gui.newStatusCallbackArray.forEach((x) => x(selector.parentElement.parentElement.id, selectedValue))
+            this.newStatusCallbackArray.forEach((x) => x(selector.parentElement.parentElement.id, selectedValue))
         }
     }
 }
