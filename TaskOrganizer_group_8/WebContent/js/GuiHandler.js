@@ -70,15 +70,15 @@ class GuiHandler {
         let count = tbody.rows.length;
 
         if (count > 0) {
-            document.getElementById('message').innerHTML = `Found ${count} tasks.`;
+            document.getElementById('message').textContent = `Found ${count} tasks.`;
 
         } else {
-            document.getElementById('message').innerHTML = `No task was found`;
+            document.getElementById('message').textContent = `No task was found`;
         }
     }
 
     updateTask = (task) => {
-        document.getElementById(task.id).getElementsByTagName('td')[1].innerHTML = `${task.status}`;
+        document.getElementById(task.id).getElementsByTagName('td')[1].textContent = `${task.status}`;
         const test = document.getElementById(task.id).getElementsByTagName('td')[2];
         test.querySelector('.select-element').value = '0';
         const optionEl = test.getElementsByTagName('option');
