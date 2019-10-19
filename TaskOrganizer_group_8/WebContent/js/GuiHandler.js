@@ -24,18 +24,24 @@ class GuiHandler {
     };
 
     showTask = (task) => {
-        let tekstloop = `<select class="select-element">
-        <option value="0" selected="">&lt;Modify&gt;</option>`;
+        let select = document.createElement("select");
+        select.setAttribute("class", "select-element");
+        let option = document.createElement("option");
+        option.setAttribute("value", "0");
+        option.setAttribute("selected", "");
+        option.innerText = "<MODIFY>";
+        select.appendChild(option);
         for (const status of this.allstatuses) {
+            let opt = document.createElement("option");
+            opt.setAttribute("value", `${status}`);
             let disb = ``;
             if (task.status === status) {
-                disb = ` disabled=""`;
+                opt.setAttribute("disabled", "");
             }
-            tekstloop += `
-            <option value="${status}"${disb}>${status}</option>
-            `;
+            opt.innerText = `${status}`;
+            select.appendChild(opt);
         }
-        tekstloop += `</select>`;
+
         let tr = document.createElement("tr");
         tr.setAttribute("id", task.id);
         let td1 = document.createElement("td");
@@ -43,7 +49,7 @@ class GuiHandler {
         let td2 = document.createElement("td");
         td2.textContent = task.status;
         let td3 = document.createElement("td");
-        td3.innerHTML = tekstloop;
+        td3.appendChild(select);
         let tableButton = document.createElement("button");
         tableButton.setAttribute("id", "rbtn");
         tableButton.setAttribute("class", "remove-btn");
@@ -61,7 +67,7 @@ class GuiHandler {
         let buttons = document.getElementsByClassName('remove-btn');
         buttons[0].addEventListener('click', this.onRemoveButtonClick);
         let selectors = document.getElementsByClassName('select-element');
-        selectors[0].addEventListener('change', this.onUpdateStatus)
+        selectors[0].addEventListener('change', this.onUpdateStatus);
         this.noTask();
     };
 
